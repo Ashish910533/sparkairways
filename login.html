@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Airways - Login</title>
+    <meta name="description"
+        content="Spark Airways - Your gateway to the skies. Login to manage your flights and account.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 25%, #e0e7ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background decorative elements */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .bg-decoration:nth-child(1) {
+            top: -10rem;
+            right: -10rem;
+            width: 20rem;
+            height: 20rem;
+            background: #93c5fd;
+            animation-delay: 0s;
+        }
+
+        .bg-decoration:nth-child(2) {
+            bottom: -10rem;
+            left: -10rem;
+            width: 20rem;
+            height: 20rem;
+            background: #7dd3fc;
+            animation-delay: 1s;
+        }
+
+        .bg-decoration:nth-child(3) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24rem;
+            height: 24rem;
+            background: #a5b4fc;
+            opacity: 0.1;
+            animation-delay: 0.5s;
+        }
+
+        /* Cloud decorations */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            filter: blur(2px);
+        }
+
+        .cloud:nth-child(4) {
+            top: 5rem;
+            left: 5rem;
+            width: 8rem;
+            height: 4rem;
+        }
+
+        .cloud:nth-child(5) {
+            top: 8rem;
+            right: 8rem;
+            width: 6rem;
+            height: 3rem;
+        }
+
+        .cloud:nth-child(6) {
+            bottom: 8rem;
+            left: 25%;
+            width: 10rem;
+            height: 5rem;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 28rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.125rem;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+            padding: 0.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .plane-icon {
+            width: 2rem;
+            height: 2rem;
+            color: white;
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .label {
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input.error {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+        }
+
+        .password-toggle:hover {
+            color: #374151;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #2563eb;
+        }
+
+        .checkbox-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .forgot-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            color: #1d4ed8;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .card-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .signup-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .signup-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link:hover {
+            color: #1d4ed8;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .alert.error {
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .alert.success {
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success animation */
+        @keyframes success {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-animation {
+            animation: success 0.5s ease-out;
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.875rem;
+            }
+
+            .login-card {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+
+    <!-- Cloud decorations -->
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to the Skies</h1>
+            <p>Your journey begins here</p>
+        </div>
+
+        <div class="login-card">
+            <div class="card-header">
+                <div class="logo-container">
+                    <div class="logo">
+                        <svg class="plane-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="brand-title">Spark Airways</h2>
+                <p class="brand-subtitle">Welcome back! Please sign in to your account</p>
+            </div>
+
+            <form class="form" id="loginForm">
+                <div id="errorAlert" class="alert error" style="display: none;"></div>
+                <div id="successAlert" class="alert success" style="display: none;"></div>
+
+                <div class="form-group">
+                    <label for="email" class="label">Email Address</label>
+                    <input type="email" id="email" class="input" placeholder="Enter your email" required
+                        aria-describedby="emailError" />
+                    <div id="emailError" class="error-message"
+                        style="display: none; color: #dc2626; font-size: 0.75rem; margin-top: 0.25rem;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="label">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" class="input" placeholder="Enter your password" required
+                            aria-describedby="passwordError" />
+                        <button type="button" class="password-toggle" id="passwordToggle"
+                            aria-label="Toggle password visibility">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" id="eyeIcon">
+                                <path
+                                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" id="eyeOffIcon"
+                                style="display: none;">
+                                <path
+                                    d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="passwordError" class="error-message"
+                        style="display: none; color: #dc2626; font-size: 0.75rem; margin-top: 0.25rem;"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="remember" class="checkbox">
+                        <label for="remember" class="checkbox-label">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span id="buttonText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="card-footer">
+                <p class="signup-text">
+                    Don't have an account?
+                    <a href="#" class="signup-link" id="signupLink">Sign up for free</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-text">
+            <p>Secure • Reliable • Trusted by millions of travelers</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const eyeOffIcon = document.getElementById('eyeOffIcon');
+        const rememberCheckbox = document.getElementById('remember');
+        const submitBtn = document.getElementById('submitBtn');
+        const buttonText = document.getElementById('buttonText');
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+        const forgotLink = document.getElementById('forgotLink');
+        const signupLink = document.getElementById('signupLink');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        // Security: Rate limiting
+        let loginAttempts = 0;
+        const maxLoginAttempts = 5;
+        let lockedUntil = 0;
+
+        // Password visibility toggle
+        let showPassword = false;
+
+        passwordToggle.addEventListener('click', function () {
+            showPassword = !showPassword;
+            passwordInput.type = showPassword ? 'text' : 'password';
+            eyeIcon.style.display = showPassword ? 'none' : 'block';
+            eyeOffIcon.style.display = showPassword ? 'block' : 'none';
+
+            // Update aria-label for accessibility
+            passwordToggle.setAttribute('aria-label',
+                showPassword ? 'Hide password' : 'Show password');
+        });
+
+        // Form validation and submission
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Check if account is temporarily locked
+            if (Date.now() < lockedUntil) {
+                const minutesLeft = Math.ceil((lockedUntil - Date.now()) / 60000);
+                showError(`Too many login attempts. Please try again in ${minutesLeft} minute(s).`);
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const rememberMe = rememberCheckbox.checked;
+
+            // Clear previous errors
+            hideErrors();
+
+            // Basic validation
+            let isValid = true;
+
+            if (!email) {
+                showFieldError(emailInput, emailError, 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showFieldError(emailInput, emailError, 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            if (!password) {
+                showFieldError(passwordInput, passwordError, 'Password is required');
+                isValid = false;
+            } else if (password.length < 6) {
+                showFieldError(passwordInput, passwordError, 'Password must be at least 6 characters long');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Show loading state
+            setLoading(true);
+
+            // Simulate login process
+            setTimeout(() => {
+                setLoading(false);
+
+                // Simulate authentication (in real app, this would be server-side)
+                if (email === 'demo@sparkairways.com' && password === 'password123') {
+                    // Successful login
+                    loginAttempts = 0; // Reset attempts on success
+                    showSuccess('Login successful! Welcome to Spark Airways.');
+                    loginCard.classList.add('success-animation');
+
+                    // In a real application, you would redirect or set session
+                    console.log('Login successful:', { email, rememberMe });
+
+                    // Reset form
+                    setTimeout(() => {
+                        loginForm.reset();
+                        loginCard.classList.remove('success-animation');
+                    }, 2000);
+                } else {
+                    // Failed login
+                    loginAttempts++;
+
+                    if (loginAttempts >= maxLoginAttempts) {
+                        // Lock account for 15 minutes
+                        lockedUntil = Date.now() + 15 * 60 * 1000;
+                        showError(`Too many failed attempts. Account locked for 15 minutes.`);
+                    } else {
+                        showError('Invalid email or password. Please try again.');
+                    }
+
+                    // Clear password field
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }, 1500);
+        });
+
+        // Utility functions
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showError(message) {
+            errorAlert.textContent = message;
+            errorAlert.style.display = 'block';
+            successAlert.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successAlert.textContent = message;
+            successAlert.style.display = 'block';
+            errorAlert.style.display = 'none';
+        }
+
+        function showFieldError(input, errorElement, message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideErrors() {
+            errorAlert.style.display = 'none';
+            successAlert.style.display = 'none';
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+        }
+
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            if (loading) {
+                buttonText.innerHTML = '<span class="loading"></span>Signing In...';
+            } else {
+                buttonText.textContent = 'Sign In';
+            }
+        }
+
+        // Forgot password link
+        forgotLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+
+            if (!email || !isValidEmail(email)) {
+                showError('Please enter a valid email address to reset your password');
+                emailInput.focus();
+                return;
+            }
+
+            // Simulate password reset request
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+                showSuccess(`Password reset instructions sent to ${email}`);
+            }, 1000);
+        });
+
+        // Sign up link
+        signupLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert('Sign up functionality would be implemented here.\n\nYou would typically be redirected to a registration page where new users can create an account.');
+        });
+
+        // Real-time validation
+        emailInput.addEventListener('input', function () {
+            if (this.value.trim() && !isValidEmail(this.value.trim())) {
+                showFieldError(this, emailError, 'Please enter a valid email address');
+            } else {
+                this.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+        });
+
+        passwordInput.addEventListener('input', function () {
+            if (this.value && this.value.length < 6) {
+                showFieldError(this, passwordError, 'Password must be at least 6 characters long');
+            } else {
+                this.classList.remove('error');
+                passwordError.style.display = 'none';
+            }
+        });
+
+        // Auto-focus email field on page load
+        window.addEventListener('load', function () {
+            emailInput.focus();
+        });
+
+        // Keyboard navigation improvements
+        loginForm.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && e.target.type !== 'submit') {
+                // Don't submit on Enter in input fields (let the submit button handle it)
+                if (e.target.type !== 'checkbox') {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
