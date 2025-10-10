@@ -23,7 +23,9 @@
             justify-content: center;
             padding: 1.5rem;
             position: relative;
-            overflow: hidden;
+            /* CHANGED: Allow scrolling */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         /* Background decorative elements */
@@ -110,6 +112,8 @@
             z-index: 10;
             width: 100%;
             max-width: 32rem;
+            margin: 2rem auto;
+            /* Added margin for scrolling */
         }
 
         .header {
@@ -136,6 +140,8 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            /* Added margin for scrolling */
         }
 
         .card-header {
@@ -328,6 +334,8 @@
             margin-top: 2rem;
             font-size: 0.875rem;
             color: #9ca3af;
+            margin-bottom: 2rem;
+            /* Added margin for scrolling */
         }
 
         .alert {
@@ -431,6 +439,28 @@
             color: #6b7280;
         }
 
+        /* Additional content for scrolling demonstration */
+        .additional-content {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 32rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .additional-content h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .additional-content p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .form-row {
@@ -445,6 +475,12 @@
 
             .signup-card {
                 padding: 1.5rem;
+            }
+
+            body {
+                padding: 1rem;
+                align-items: flex-start;
+                padding-top: 2rem;
             }
         }
     </style>
@@ -587,6 +623,7 @@
 
         <div class="footer-text">
             <p>Secure • Reliable • Trusted by millions of travelers</p>
+            <p style="margin-top: 1rem;">© 2024 Spark Airways. All rights reserved.</p>
         </div>
     </div>
 
@@ -904,6 +941,5 @@
         });
     </script>
 </body>
-
 
 </html>
