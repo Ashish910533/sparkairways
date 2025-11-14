@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Route Optimizer</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .algorithm-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .algo-btn {
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .algo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .algo-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .coupon-section {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ffc107;
+        }
+
+        .coupon-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .coupon-item:hover {
+            background: #ffe69c;
+            transform: translateX(5px);
+        }
+
+        .coupon-item.active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .coupon-discount {
+            background: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .coupon-item.active .coupon-discount {
+            background: white;
+            color: #28a745;
+        }
+
+        .result-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .result-box.success {
+            border: 2px solid #28a745;
+            background: #d4edda;
+        }
+
+        .result-box.error {
+            border: 2px solid #dc3545;
+            background: #f8d7da;
+        }
+
+        .result-box.warning {
+            border: 2px solid #ffc107;
+            background: #fff3cd;
+        }
+
+        .route-path {
+            margin: 20px 0;
+        }
+
+        .route-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .route-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .route-number.start {
+            background: #28a745;
+        }
+
+        .route-number.end {
+            background: #dc3545;
+        }
+
+        .route-number.middle {
+            background: #667eea;
+        }
+
+        .route-info {
+            flex: 1;
+        }
+
+        .route-city {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #212529;
+        }
+
+        .route-cost {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .route-cost.discounted {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .total-cost {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #dee2e6;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .map-placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+        }
+
+        .info-card.dijkstra {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .info-card.bellman {
+            background: #f3e5f5;
+            border-color: #9c27b0;
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info-card.dijkstra h3 {
+            color: #2196f3;
+        }
+
+        .info-card.bellman h3 {
+            color: #9c27b0;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✈️ Airline Route Optimizer</h1>
+            <p>Find the cheapest flight path using Dijkstra's and Bellman-Ford algorithms</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Left Section: Controls -->
+            <div>
+                <div class="section">
+                    <h2>🎯 Route Selection</h2>
+
+                    <div class="form-group">
+                        <label>Source City</label>
+                        <select id="sourceCity">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Chennai">Chennai</option>
+                            <option value="Kolkata">Kolkata</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Pune">Pune</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Lucknow">Lucknow</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Destination City</label>
+                        <select id="destinationCity">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Mumbai" selected>Mumbai</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Chennai">Chennai</option>
+                            <option value="Kolkata">Kolkata</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Pune">Pune</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Lucknow">Lucknow</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Algorithm</label>
+                        <div class="algorithm-buttons">
+                            <button class="algo-btn active" data-algo="dijkstra">Dijkstra</button>
+                            <button class="algo-btn" data-algo="bellmanford">Bellman-Ford</button>
+                        </div>
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculateRoute()">Calculate Best Route</button>
+                </div>
+
+                <div class="section" style="margin-top: 20px;">
+                    <h2>🎟️ Discount Coupons</h2>
+                    <p style="margin-bottom: 15px; color: #6c757d;">Click to apply ₹1000 discount on routes</p>
+                    <div class="coupon-section" id="couponList"></div>
+                </div>
+            </div>
+
+            <!-- Right Section: Results -->
+            <div>
+                <div class="section">
+                    <h2>📊 Results</h2>
+                    <div id="resultContainer"></div>
+                </div>
+
+                <div class="section" style="margin-top: 20px;">
+                    <h2>🗺️ Route Map</h2>
+                    <div class="map-container">
+                        <div id="map" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 30px;">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #667eea;">Algorithm Information</h2>
+            <div class="info-grid">
+                <div class="info-card dijkstra">
+                    <h3>Dijkstra's Algorithm</h3>
+                    <p>Efficient greedy algorithm that finds the shortest path in graphs with non-negative edge weights.
+                        It cannot handle negative weights from discount coupons. Best for basic route finding without
+                        promotions.</p>
+                </div>
+                <div class="info-card bellman">
+                    <h3>Bellman-Ford Algorithm</h3>
+                    <p>More versatile algorithm that can handle negative edge weights (discount coupons). It can also
+                        detect negative cycles, which occur when coupons create infinite savings loops. Essential for
+                        promotion-based routing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // City coordinates
+        const cities = {
+            'Delhi': { lat: 28.6139, lng: 77.2090 },
+            'Mumbai': { lat: 19.0760, lng: 72.8777 },
+            'Bangalore': { lat: 12.9716, lng: 77.5946 },
+            'Chennai': { lat: 13.0827, lng: 80.2707 },
+            'Kolkata': { lat: 22.5726, lng: 88.3639 },
+            'Hyderabad': { lat: 17.3850, lng: 78.4867 },
+            'Pune': { lat: 18.5204, lng: 73.8567 },
+            'Ahmedabad': { lat: 23.0225, lng: 72.5714 },
+            'Jaipur': { lat: 26.9124, lng: 75.7873 },
+            'Lucknow': { lat: 26.8467, lng: 80.9462 }
+        };
+
+        // Flight routes with costs
+        const routes = {
+            'Delhi': [
+                { to: 'Mumbai', cost: 5000 },
+                { to: 'Jaipur', cost: 2000 },
+                { to: 'Lucknow', cost: 2500 }
+            ],
+            'Jaipur': [
+                { to: 'Delhi', cost: 2000 },
+                { to: 'Mumbai', cost: 4000 },
+                { to: 'Ahmedabad', cost: 3000 }
+            ],
+            'Lucknow': [
+                { to: 'Delhi', cost: 2500 },
+                { to: 'Kolkata', cost: 3500 },
+                { to: 'Mumbai', cost: 5500 }
+            ],
+            'Ahmedabad': [
+                { to: 'Jaipur', cost: 3000 },
+                { to: 'Mumbai', cost: 2500 },
+                { to: 'Pune', cost: 2000 }
+            ],
+            'Mumbai': [
+                { to: 'Delhi', cost: 5000 },
+                { to: 'Pune', cost: 1500 },
+                { to: 'Bangalore', cost: 3500 },
+                { to: 'Ahmedabad', cost: 2500 }
+            ],
+            'Pune': [
+                { to: 'Mumbai', cost: 1500 },
+                { to: 'Bangalore', cost: 3000 },
+                { to: 'Hyderabad', cost: 2000 }
+            ],
+            'Bangalore': [
+                { to: 'Mumbai', cost: 3500 },
+                { to: 'Chennai', cost: 2500 },
+                { to: 'Hyderabad', cost: 2000 },
+                { to: 'Pune', cost: 3000 }
+            ],
+            'Chennai': [
+                { to: 'Bangalore', cost: 2500 },
+                { to: 'Hyderabad', cost: 3000 },
+                { to: 'Kolkata', cost: 4500 }
+            ],
+            'Hyderabad': [
+                { to: 'Bangalore', cost: 2000 },
+                { to: 'Chennai', cost: 3000 },
+                { to: 'Pune', cost: 2000 },
+                { to: 'Kolkata', cost: 4000 }
+            ],
+            'Kolkata': [
+                { to: 'Chennai', cost: 4500 },
+                { to: 'Hyderabad', cost: 4000 },
+                { to: 'Lucknow', cost: 3500 }
+            ]
+        };
+
+        let activeCoupons = {};
+        let selectedAlgorithm = 'dijkstra';
+        let map;
+        let markers = [];
+        let flightPath;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeMap();
+            initializeCoupons();
+            initializeAlgorithmButtons();
+            calculateRoute();
+        });
+
+        function initializeMap() {
+            // Center of India
+            const india = { lat: 20.5937, lng: 78.9629 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: india,
+                mapTypeId: 'terrain'
+            });
+        }
+
+        function updateMap(path) {
+            // Clear existing markers and path
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+            if (flightPath) {
+                flightPath.setMap(null);
+            }
+
+            if (!path || path.length === 0) return;
+
+            // Create markers for each city in path
+            const pathCoordinates = [];
+            path.forEach((city, index) => {
+                const position = cities[city];
+                pathCoordinates.push(position);
+
+                let markerColor = 'blue';
+                let label = (index + 1).toString();
+
+                if (index === 0) {
+                    markerColor = 'green';
+                    label = 'S';
+                } else if (index === path.length - 1) {
+                    markerColor = 'red';
+                    label = 'D';
+                }
+
+                const marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: city,
+                    label: {
+                        text: label,
+                        color: 'white',
+                        fontWeight: 'bold'
+                    },
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 12,
+                        fillColor: markerColor,
+                        fillOpacity: 1,
+                        strokeColor: 'white',
+                        strokeWeight: 2
+                    }
+                });
+
+                // Add info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: '<div style="padding: 5px;"><strong>' + city + '</strong><br>Stop ' + (index + 1) + '</div>'
+                });
+
+                marker.addListener('click', function () {
+                    infoWindow.open(map, marker);
+                });
+
+                markers.push(marker);
+            });
+
+            // Draw flight path
+            flightPath = new google.maps.Polyline({
+                path: pathCoordinates,
+                geodesic: true,
+                strokeColor: '#667eea',
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+                    },
+                    offset: '100%',
+                    repeat: '100px'
+                }]
+            });
+
+            flightPath.setMap(map);
+
+            // Fit map bounds to show all markers
+            const bounds = new google.maps.LatLngBounds();
+            pathCoordinates.forEach(coord => bounds.extend(coord));
+            map.fitBounds(bounds);
+        }
+
+        function initializeCoupons() {
+            const couponList = document.getElementById('couponList');
+            couponList.innerHTML = '';
+
+            Object.entries(routes).forEach(([from, connections]) => {
+                connections.forEach(({ to, cost }) => {
+                    const key = `${from}-${to}`;
+                    const div = document.createElement('div');
+                    div.className = 'coupon-item';
+                    div.onclick = () => toggleCoupon(key);
+                    div.innerHTML = `
+                        <span><strong>${from}</strong> → <strong>${to}</strong></span>
+                        <span class="coupon-discount">-₹1000</span>
+                    `;
+                    couponList.appendChild(div);
+                });
+            });
+        }
+
+        function toggleCoupon(key) {
+            if (activeCoupons[key]) {
+                delete activeCoupons[key];
+            } else {
+                activeCoupons[key] = 1000;
+            }
+            updateCouponDisplay();
+            calculateRoute();
+        }
+
+        function updateCouponDisplay() {
+            const couponItems = document.querySelectorAll('.coupon-item');
+            couponItems.forEach(item => {
+                const text = item.querySelector('span').textContent;
+                const match = text.match(/(\w+)\s*→\s*(\w+)/);
+                if (match) {
+                    const key = `${match[1]}-${match[2]}`;
+                    if (activeCoupons[key]) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        function initializeAlgorithmButtons() {
+            const buttons = document.querySelectorAll('.algo-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedAlgorithm = this.dataset.algo;
+                    calculateRoute();
+                });
+            });
+        }
+
+        function getAdjustedCost(from, to, baseCost) {
+            const key = `${from}-${to}`;
+            const discount = activeCoupons[key] || 0;
+            return baseCost - discount;
+        }
+
+        function dijkstra(start, end) {
+            const distances = {};
+            const previous = {};
+            const unvisited = new Set();
+
+            Object.keys(cities).forEach(city => {
+                distances[city] = Infinity;
+                previous[city] = null;
+                unvisited.add(city);
+            });
+            distances[start] = 0;
+
+            while (unvisited.size > 0) {
+                let current = null;
+                let minDist = Infinity;
+
+                unvisited.forEach(city => {
+                    if (distances[city] < minDist) {
+                        minDist = distances[city];
+                        current = city;
+                    }
+                });
+
+                if (current === null || current === end) break;
+                unvisited.delete(current);
+
+                if (routes[current]) {
+                    routes[current].forEach(({ to, cost }) => {
+                        const adjustedCost = getAdjustedCost(current, to, cost);
+
+                        if (adjustedCost < 0) {
+                            return; // Dijkstra can't handle negative weights
+                        }
+
+                        const alt = distances[current] + adjustedCost;
+                        if (alt < distances[to]) {
+                            distances[to] = alt;
+                            previous[to] = current;
+                        }
+                    });
+                }
+            }
+
+            const path = [];
+            let curr = end;
+            while (curr) {
+                path.unshift(curr);
+                curr = previous[curr];
+            }
+
+            return {
+                path: path[0] === start ? path : [],
+                cost: distances[end] === Infinity ? null : distances[end],
+                hasNegativeWeights: Object.keys(activeCoupons).length > 0
+            };
+        }
+
+        function bellmanFord(start, end) {
+            const distances = {};
+            const previous = {};
+            const vertices = Object.keys(cities);
+
+            vertices.forEach(city => {
+                distances[city] = Infinity;
+                previous[city] = null;
+            });
+            distances[start] = 0;
+
+            // Relax edges V-1 times
+            for (let i = 0; i < vertices.length - 1; i++) {
+                vertices.forEach(from => {
+                    if (routes[from] && distances[from] !== Infinity) {
+                        routes[from].forEach(({ to, cost }) => {
+                            const adjustedCost = getAdjustedCost(from, to, cost);
+                            const alt = distances[from] + adjustedCost;
+                            if (alt < distances[to]) {
+                                distances[to] = alt;
+                                previous[to] = from;
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Check for negative cycles
+            let hasNegativeCycle = false;
+            vertices.forEach(from => {
+                if (routes[from] && distances[from] !== Infinity) {
+                    routes[from].forEach(({ to, cost }) => {
+                        const adjustedCost = getAdjustedCost(from, to, cost);
+                        if (distances[from] + adjustedCost < distances[to]) {
+                            hasNegativeCycle = true;
+                        }
+                    });
+                }
+            });
+
+            const path = [];
+            let curr = end;
+            while (curr) {
+                path.unshift(curr);
+                curr = previous[curr];
+            }
+
+            return {
+                path: path[0] === start ? path : [],
+                cost: distances[end] === Infinity ? null : distances[end],
+                hasNegativeCycle
+            };
+        }
+
+        function calculateRoute() {
+            const source = document.getElementById('sourceCity').value;
+            const destination = document.getElementById('destinationCity').value;
+            const resultContainer = document.getElementById('resultContainer');
+
+            if (source === destination) {
+                resultContainer.innerHTML = `
+                    <div class="result-box error">
+                        <h3>⚠️ Error</h3>
+                        <p>Source and destination must be different cities!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let result;
+            if (selectedAlgorithm === 'dijkstra') {
+                result = dijkstra(source, destination);
+            } else {
+                result = bellmanFord(source, destination);
+            }
+
+            displayResult(result, source, destination);
+        }
+
+        function displayResult(result, source, destination) {
+            const resultContainer = document.getElementById('resultContainer');
+            let html = '';
+
+            if (result.hasNegativeCycle) {
+                html += `
+                    <div class="result-box warning">
+                        <h3>⚠️ Negative Cycle Detected!</h3>
+                        <p>The current coupon combination creates unlimited savings. This is detected by Bellman-Ford algorithm.</p>
+                    </div>
+                `;
+            }
+
+            if (selectedAlgorithm === 'dijkstra' && result.hasNegativeWeights) {
+                html += `
+                    <div class="result-box warning">
+                        <h3>⚠️ Warning</h3>
+                        <p>Dijkstra's algorithm cannot handle negative weights from coupons. Switch to Bellman-Ford for accurate results with discounts.</p>
+                    </div>
+                `;
+            }
+
+            if (result.path && result.path.length > 0 && result.cost !== null) {
+                html += `<div class="result-box success">`;
+                html += `<h3>✅ Optimal Route Found</h3>`;
+                html += `<div class="route-path">`;
+
+                result.path.forEach((city, idx) => {
+                    const isStart = idx === 0;
+                    const isEnd = idx === result.path.length - 1;
+                    const numberClass = isStart ? 'start' : isEnd ? 'end' : 'middle';
+
+                    html += `
+                        <div class="route-step">
+                            <div class="route-number ${numberClass}">${idx + 1}</div>
+                            <div class="route-info">
+                                <div class="route-city">${city}</div>
+                    `;
+
+                    if (idx < result.path.length - 1) {
+                        const nextCity = result.path[idx + 1];
+                        const route = routes[city].find(r => r.to === nextCity);
+                        const baseCost = route ? route.cost : 0;
+                        const key = city + '-' + nextCity;
+                        const hasCoupon = activeCoupons[key];
+                        const adjustedCost = getAdjustedCost(city, nextCity, baseCost);
+
+                        html += '<div class="route-cost ' + (hasCoupon ? 'discounted' : '') + '">';
+                        html += '↓ ₹' + baseCost;
+                        if (hasCoupon) {
+                            html += ' <strong>(-₹1000 coupon) = ₹' + adjustedCost + '</strong>';
+                        }
+                        html += '</div>';
+                    }
+
+                    html += `</div></div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="total-cost">Total Cost: ₹${result.cost}</div>`;
+                html += `</div>`;
+            } else if (result.cost === null) {
+                html += `
+                    <div class="result-box error">
+                        <h3>❌ No Route Found</h3>
+                        <p>No path exists between ${source} and ${destination}</p>
+                    </div>
+                `;
+            }
+
+            resultContainer.innerHTML = html;
+
+            // Update map with the route
+            if (result.path && result.path.length > 0) {
+                updateMap(result.path);
+            }
+        }
+    </script>
+</body>
+
+</html>
