@@ -24,6 +24,45 @@
             --border: #e2e8f0;
         }
 
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            z-index: 1000;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .status-dot.disconnected {
+            background: #ef4444;
+        }
+
         body {
             background-color: #f1f5f9;
             color: var(--dark);
@@ -32,7 +71,7 @@
 
         /* Header & Navigation */
         header {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80);
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80);
             color: white;
             padding: 1rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -57,6 +96,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .logo h1 {
@@ -83,6 +123,7 @@
             transition: color 0.3s;
             padding: 0.5rem 0;
             position: relative;
+            cursor: pointer;
         }
 
         nav a:hover {
@@ -120,31 +161,145 @@
             transform: translateY(-2px);
         }
 
-        .log-in-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        /* Page Sections */
+        .page-section {
+            display: none;
         }
 
-        .log-in-btn:hover {
-            background-color: #e69500;
-            transform: translateY(-2px);
+        .page-section.active {
+            display: block;
         }
 
         /* Hero Section */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80');
+                url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80');
             background-size: cover;
             background-position: center;
             color: white;
             padding: 5rem 0;
             text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Flight Search */
+        .flight-search {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: -3rem auto 3rem;
+            max-width: 1000px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .form-control {
+            padding: 0.8rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .search-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .Isearch-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .Isearch-btn:hover {
+            background-color: #b91c1c;
+            transform: translateY(-2px);
         }
 
         /* Flight Results Section */
@@ -270,317 +425,6 @@
             color: var(--gray);
         }
 
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .chatbot-toggle {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
-        }
-
-        .chatbot-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .chatbot-window {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 350px;
-            height: 450px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chatbot-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chatbot-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chatbot-title i {
-            font-size: 20px;
-        }
-
-        .chatbot-close {
-            background: none;
-            border: none;
-            color: rgb(255, 255, 255);
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .chatbot-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .bot-message {
-            background: #21a2e2;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            background: var(--primary);
-            color: rgb(243, 8, 8) align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chatbot-input {
-            display: flex;
-            padding: 15px;
-            border-top: 1px solid var(--border);
-        }
-
-        .chatbot-input input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            outline: none;
-        }
-
-        .chatbot-input button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .chatbot-input button:hover {
-            background: #1e3a8a;
-        }
-
-        .chatbot-input button:disabled {
-            background: var(--gray);
-            cursor: not-allowed;
-        }
-
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 5px;
-            padding: 10px 15px;
-            background: #f1f3f4;
-            border-radius: 18px;
-            align-self: flex-start;
-            max-width: 80px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--gray);
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-            }
-
-            30% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .quick-reply {
-            background: white;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .quick-reply:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .hero h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            opacity: 0.9;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Flight Search */
-        .flight-search {
-            background-color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin: -3rem auto 3rem;
-            max-width: 1000px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .form-control {
-            padding: 0.8rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-        }
-
-        .search-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .filter-btn {
-            background-color: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .filter-btn.active {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .filter-btn:hover:not(.active) {
-            background-color: var(--light);
-        }
-
-        .search-btn {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-btn:hover {
-            background-color: #b91c1c;
-            transform: translateY(-2px);
-        }
-
         /* Features Section */
         .features {
             padding: 4rem 0;
@@ -625,6 +469,291 @@
             color: var(--dark);
         }
 
+        /* Services Portal Styles */
+        .services-portal {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 2rem;
+        }
+
+        .category {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .category h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category h3 i {
+            color: var(--secondary);
+        }
+
+        .links-list {
+            list-style: none;
+        }
+
+        .links-list li {
+            margin-bottom: 12px;
+        }
+
+        .links-list a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .links-list a:hover {
+            background: #e9ecef;
+            border-left: 4px solid var(--primary);
+            transform: translateX(5px);
+        }
+
+        .links-list a i {
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Subpage Styles */
+        .subpage-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .subpage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-right: 20px;
+        }
+
+        .back-btn:hover {
+            background: #1e3a8a;
+        }
+
+        .subpage-header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #1e3a8a;
+        }
+
+        /* Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background: #f1f3f4;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chatbot-input button:hover {
+            background: #1e3a8a;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-reply {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-reply:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         /* Footer */
         footer {
             background-color: var(--dark);
@@ -663,6 +792,8 @@
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             transition: background-color 0.3s;
+            text-decoration: none;
+            color: white;
         }
 
         .social-icon:hover {
@@ -698,6 +829,7 @@
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         .footer-links a:hover {
@@ -751,6 +883,8 @@
 
             nav ul {
                 gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .hero h2 {
@@ -772,11 +906,6 @@
                 align-items: flex-start;
             }
 
-            .filter-buttons {
-                width: 100%;
-                justify-content: space-between;
-            }
-
             .features-grid {
                 grid-template-columns: 1fr;
             }
@@ -791,6 +920,66 @@
                 gap: 1rem;
             }
         }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            z-index: 1000;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .status-dot.disconnected {
+            background: #ef4444;
+        }
     </style>
 </head>
 
@@ -798,136 +987,668 @@
     <!-- Header -->
     <header>
         <div class="container nav-container">
-            <div class="logo">
+            <div class="logo" onclick="showPage('home')">
                 <h1>SPARK Airways <span>आप की सुविधा हमारा वादा!</span></h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#">Flights</a></li>
-                    <li><a href="#">Manage Booking</a></li>
-                    <li><a href="#">Support</a></li>
+                    <li><a onclick="showPage('home')">Home</a></li>
+                    <li><a onclick="showPage('flights')">Flights</a></li>
+                    <li><a onclick="showPage('services')">Services</a></li>
+                    <li><a onclick="showPage('manage-booking')">Manage Booking</a></li>
+                    <li><a onclick="showPage('support')">Support</a></li>
                 </ul>
             </nav>
-            <a href="login.html">
-                <button class="log-in-btn">Log In</button>
-            </a>
-            <a href="signup.html">
+            <<a href="signup.html">
                 <button class="sign-in-btn">Sign In</button>
-            </a>
+                </a>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="tagline">आप की सुविधा हमारा वादा!</div>
-            <h2>Welcome to SPARK Airways</h2>
-            <p>Your comfort is our promise - Experience premium air travel with unmatched service</p>
-        </div>
-    </section>
+    <!-- Home Page -->
+    <div id="home-page" class="page-section active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="tagline">आप की सुविधा हमारा वादा!</div>
+                <h2>Welcome to SPARK Airways</h2>
+                <p>Your comfort is our promise - Experience premium air travel with unmatched service</p>
+            </div>
+        </section>
 
-    <!-- Flight Search -->
-    <section class="container">
-        <div class="flight-search">
-            <h3 class="search-title">Find Your Perfect Flight</h3>
-            <form class="search-form" id="flightSearchForm">
+        <!-- Flight Search -->
+        <section class="container">
+            <div class="flight-search">
+                <h3 class="search-title">Find Your Perfect Flight</h3>
+                <form class="search-form" id="flightSearchForm">
+                    <div class="form-group">
+                        <label for="from">From</label>
+                        <select id="from" class="form-control" required>
+                            <option value="" disabled selected>Select origin</option>
+                            <option value="DEL">Delhi (DEL)</option>
+                            <option value="BOM">Mumbai (BOM)</option>
+                            <option value="BLR">Bangalore (BLR)</option>
+                            <option value="MAA">Chennai (MAA)</option>
+                            <option value="CCU">Kolkata (CCU)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="to">To</label>
+                        <select id="to" class="form-control" required>
+                            <option value="" disabled selected>Select destination</option>
+                            <option value="DEL">Delhi (DEL)</option>
+                            <option value="BOM">Mumbai (BOM)</option>
+                            <option value="BLR">Bangalore (BLR)</option>
+                            <option value="MAA">Chennai (MAA)</option>
+                            <option value="CCU">Kolkata (CCU)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="departure">Departure</label>
+                        <input type="date" id="departure" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passengers">Passengers</label>
+                        <select id="passengers" class="form-control" required>
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4 Passengers</option>
+                            <option value="5">5+ Passengers</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="search-options">
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="cheapest" name="flight-option" value="cheapest" checked>
+                            <label for="cheapest">Cheapest</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="fastest" name="flight-option" value="fastest">
+                            <label for="fastest">Fastest</label>
+                        </div>
+                    </div>
+                    <button class="search-btn" id="searchFlightsBtn">Search Flights</button>
+                    <a href="analysis.html">
+                        <button class="Isearch-btn" id="IsearchFlightsBtn">Analysis Flights</button>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flight Results Section -->
+        <section class="container">
+            <div class="flight-results" id="flightResults">
+                <div class="results-header">
+                    <h3 class="results-title">Available Flights</h3>
+                    <span class="results-count" id="resultsCount">0 flights found</span>
+                </div>
+                <div id="flightsList"></div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose SPARK Airways?</h2>
+                <p
+                    style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Experience the difference with our premium services
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Safe & Secure</h3>
+                        <p>Industry-leading safety standards with advanced aircraft monitoring systems.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                        <h3>On-Time Performance</h3>
+                        <p>96% on-time performance record with efficient flight operations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>24/7 Support</h3>
+                        <p>Round-the-clock customer support with AI-powered assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Flights Page (same as home search, reusable) -->
+    <div id="flights-page" class="page-section">
+        <section class="hero" style="padding: 3rem 0;">
+            <div class="container">
+                <h2>Book Your Flight</h2>
+                <p>Find the best deals on flights to destinations worldwide</p>
+            </div>
+        </section>
+        <section class="container">
+            <div class="flight-search">
+                <h3 class="search-title">Search Flights</h3>
+                <form class="search-form">
+                    <div class="form-group">
+                        <label>From</label>
+                        <select class="form-control" required>
+                            <option value="" disabled selected>Select origin</option>
+                            <option value="DEL">Delhi (DEL)</option>
+                            <option value="BOM">Mumbai (BOM)</option>
+                            <option value="BLR">Bangalore (BLR)</option>
+                            <option value="MAA">Chennai (MAA)</option>
+                            <option value="CCU">Kolkata (CCU)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <select class="form-control" required>
+                            <option value="" disabled selected>Select destination</option>
+                            <option value="DEL">Delhi (DEL)</option>
+                            <option value="BOM">Mumbai (BOM)</option>
+                            <option value="BLR">Bangalore (BLR)</option>
+                            <option value="MAA">Chennai (MAA)</option>
+                            <option value="CCU">Kolkata (CCU)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Passengers</label>
+                        <select class="form-control" required>
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4 Passengers</option>
+                            <option value="5">5+ Passengers</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="search-options">
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="flight-option-2" value="cheapest" checked>
+                            <label>Cheapest</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="flight-option-2" value="fastest">
+                            <label>Fastest</label>
+                        </div>
+                    </div>
+                    <button class="search-btn">Search Flights</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Services Portal Page -->
+    <div id="services-page" class="page-section">
+        <section class="services-portal">
+            <div class="container">
+                <h2 class="section-title">Airline Services Portal</h2>
+                <p style="text-align: center; margin-bottom: 2rem; color: var(--gray);">Find everything you need for
+                    your journey in one place</p>
+
+                <div class="links-grid">
+                    <!-- Quick Links Category -->
+                    <div class="category">
+                        <h3><i class="fas fa-bolt"></i> Quick Links</h3>
+                        <ul class="links-list">
+                            <li><a onclick="showSubpage('book-flights')"><i class="fas fa-plane"></i> Book Flights</a>
+                            </li>
+                            <li><a onclick="showSubpage('manage-booking-detail')"><i class="fas fa-tasks"></i> Manage
+                                    Booking</a></li>
+                            <li><a onclick="showSubpage('check-in')"><i class="fas fa-check-circle"></i> Check-in
+                                    Online</a></li>
+                            <li><a onclick="showSubpage('flight-status')"><i class="fas fa-info-circle"></i> Flight
+                                    Status</a></li>
+                            <li><a onclick="showSubpage('baggage-info')"><i class="fas fa-suitcase"></i> Baggage
+                                    Info</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Support Category -->
+                    <div class="category">
+                        <h3><i class="fas fa-headset"></i> Support</h3>
+                        <ul class="links-list">
+                            <li><a onclick="showSubpage('contact-us')"><i class="fas fa-phone-alt"></i> Contact Us</a>
+                            </li>
+                            <li><a onclick="showSubpage('faqs')"><i class="fas fa-question-circle"></i> FAQs</a></li>
+                            <li><a onclick="showSubpage('travel-advisory')"><i class="fas fa-exclamation-triangle"></i>
+                                    Travel Advisory</a></li>
+                            <li><a onclick="showSubpage('refund-policy')"><i class="fas fa-undo"></i> Refund Policy</a>
+                            </li>
+                            <li><a onclick="showSubpage('site-map')"><i class="fas fa-sitemap"></i> Site Map</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Manage Booking Page -->
+    <div id="manage-booking-page" class="page-section">
+        <section class="hero" style="padding: 3rem 0;">
+            <div class="container">
+                <h2>Manage Your Booking</h2>
+                <p>View or modify your existing reservations</p>
+            </div>
+        </section>
+        <section class="container">
+            <div class="subpage-content">
+                <h3>Retrieve Your Booking</h3>
+                <p>Make changes to your flight, select seats, add special meals, or update passenger information.</p>
+
                 <div class="form-group">
-                    <label for="from">From</label>
-                    <select id="from" class="form-control" required>
-                        <option value="" disabled selected>Select origin</option>
-                        <option value="DEL">Delhi (DEL)</option>
-                        <option value="BOM">Mumbai (BOM)</option>
-                        <option value="BLR">Bangalore (BLR)</option>
-                        <option value="MAA">Chennai (MAA)</option>
-                        <option value="CCU">Kolkata (CCU)</option>
-                        <option value="HYD">Hyderabad (HYD)</option>
+                    <label for="booking-ref">Booking Reference</label>
+                    <input type="text" id="booking-ref" class="form-control" placeholder="Enter your booking reference">
+                </div>
+
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" class="form-control" placeholder="Enter passenger's last name">
+                </div>
+
+                <button class="btn">Retrieve Booking</button>
+
+                <h3 style="margin-top: 2rem;">What You Can Do</h3>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Change flight dates or times</li>
+                    <li>Select or change seats</li>
+                    <li>Add special meals</li>
+                    <li>Update passenger details</li>
+                    <li>Purchase additional baggage</li>
+                    <li>Upgrade your class</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Support Page -->
+    <div id="support-page" class="page-section">
+        <section class="hero" style="padding: 3rem 0;">
+            <div class="container">
+                <h2>Customer Support</h2>
+                <p>We're here to help you every step of the way</p>
+            </div>
+        </section>
+        <section class="container">
+            <div class="subpage-content">
+                <h3>Get in Touch</h3>
+                <p>We're here to help with any questions or concerns you may have.</p>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Customer Service</h3>
+                <p><strong>Phone:</strong> +91 1800-123-4567 (24/7)</p>
+                <p><strong>Email:</strong> support@sparkairways.com</p>
+                <p><strong>Live Chat:</strong> Available through our chatbot (bottom right)</p>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Send Us a Message</h3>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Your email address">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" class="form-control">
+                        <option>General Inquiry</option>
+                        <option>Flight Booking</option>
+                        <option>Baggage Issue</option>
+                        <option>Refund Request</option>
+                        <option>Complaint</option>
+                        <option>Compliment</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label for="to">To</label>
-                    <select id="to" class="form-control" required>
-                        <option value="" disabled selected>Select destination</option>
-                        <option value="DEL">Delhi (DEL)</option>
-                        <option value="BOM">Mumbai (BOM)</option>
-                        <option value="BLR">Bangalore (BLR)</option>
-                        <option value="MAA">Chennai (MAA)</option>
-                        <option value="CCU">Kolkata (CCU)</option>
-                        <option value="HYD">Hyderabad (HYD)</option>
+                    <label for="message">Message</label>
+                    <textarea id="message" class="form-control" rows="5" placeholder="Your message"></textarea>
+                </div>
+
+                <button class="btn">Send Message</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Subpages for Services -->
+    <div id="book-flights" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-plane"></i> Book Flights</h2>
+                </div>
+                <h3>Find and Book Your Flight</h3>
+                <p>Search for available flights and book your journey with ease.</p>
+
+                <div class="form-group">
+                    <label for="from-book">From</label>
+                    <input type="text" id="from-book" class="form-control" placeholder="Departure city">
+                </div>
+
+                <div class="form-group">
+                    <label for="to-book">To</label>
+                    <input type="text" id="to-book" class="form-control" placeholder="Destination city">
+                </div>
+
+                <div class="form-group">
+                    <label for="departure-book">Departure Date</label>
+                    <input type="date" id="departure-book" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="return-book">Return Date (Optional)</label>
+                    <input type="date" id="return-book" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="passengers-book">Passengers</label>
+                    <select id="passengers-book" class="form-control">
+                        <option>1 Adult</option>
+                        <option>2 Adults</option>
+                        <option>1 Adult, 1 Child</option>
+                        <option>2 Adults, 1 Child</option>
+                        <option>2 Adults, 2 Children</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="departure">Departure</label>
-                    <input type="date" id="departure" class="form-control" required>
+
+                <button class="btn">Search Flights</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="manage-booking-detail" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-tasks"></i> Manage Booking</h2>
                 </div>
+                <h3>Manage Your Existing Booking</h3>
+                <p>Make changes to your flight, select seats, add special meals, or update passenger information.</p>
+
                 <div class="form-group">
-                    <label for="passengers">Passengers</label>
-                    <select id="passengers" class="form-control" required>
-                        <option value="1">1 Passenger</option>
-                        <option value="2">2 Passengers</option>
-                        <option value="3">3 Passengers</option>
-                        <option value="4">4 Passengers</option>
-                        <option value="5">5+ Passengers</option>
+                    <label>Booking Reference</label>
+                    <input type="text" class="form-control" placeholder="Enter your booking reference">
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter passenger's last name">
+                </div>
+
+                <button class="btn">Retrieve Booking</button>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">What You Can Do</h3>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Change flight dates or times</li>
+                    <li>Select or change seats</li>
+                    <li>Add special meals</li>
+                    <li>Update passenger details</li>
+                    <li>Purchase additional baggage</li>
+                    <li>Upgrade your class</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <div id="check-in" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-check-circle"></i> Online Check-in</h2>
+                </div>
+                <h3>Check-in for Your Flight</h3>
+                <p>Save time at the airport by checking in online. Online check-in is available from 24 hours to 2 hours
+                    before departure.</p>
+
+                <div class="form-group">
+                    <label>Booking Reference or eTicket Number</label>
+                    <input type="text" class="form-control" placeholder="Enter your reference number">
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter passenger's last name">
+                </div>
+
+                <button class="btn">Check-in Now</button>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Benefits of Online Check-in</h3>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Skip the airport check-in queues</li>
+                    <li>Select your preferred seat</li>
+                    <li>Receive your boarding pass electronically</li>
+                    <li>Get through security faster</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <div id="flight-status" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-info-circle"></i> Flight Status</h2>
+                </div>
+                <h3>Check Your Flight Status</h3>
+                <p>Get real-time information about your flight's departure and arrival times.</p>
+
+                <div class="form-group">
+                    <label>Flight Number</label>
+                    <input type="text" class="form-control" placeholder="e.g., SA123">
+                </div>
+
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" class="form-control">
+                </div>
+
+                <button class="btn">Check Status</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="baggage-info" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-suitcase"></i> Baggage Information</h2>
+                </div>
+                <h3>Baggage Allowance and Information</h3>
+                <p>Understand our baggage policies to ensure a smooth travel experience.</p>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Carry-on Baggage</h3>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Economy Class: 1 piece, max 7kg</li>
+                    <li>Business Class: 2 pieces, max 14kg total</li>
+                    <li>First Class: 2 pieces, max 18kg total</li>
+                    <li>Dimensions: 56cm x 36cm x 23cm</li>
+                </ul>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Checked Baggage</h3>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Economy Basic: No checked baggage included</li>
+                    <li>Economy Standard: 1 piece, 23kg</li>
+                    <li>Economy Flex: 2 pieces, 23kg each</li>
+                    <li>Business Class: 2 pieces, 32kg each</li>
+                    <li>First Class: 3 pieces, 32kg each</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <div id="contact-us" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-phone-alt"></i> Contact Us</h2>
+                </div>
+                <h3>Get in Touch</h3>
+                <p>We're here to help with any questions or concerns you may have.</p>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Customer Service</h3>
+                <p><strong>Phone:</strong> +91 1800-123-4567 (24/7)</p>
+                <p><strong>Email:</strong> support@sparkairways.com</p>
+
+                <h3 style="color: var(--secondary); margin-top: 2rem;">Send Us a Message</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" placeholder="Your full name">
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" placeholder="Your email address">
+                </div>
+
+                <div class="form-group">
+                    <label>Subject</label>
+                    <select class="form-control">
+                        <option>General Inquiry</option>
+                        <option>Flight Booking</option>
+                        <option>Baggage Issue</option>
+                        <option>Refund Request</option>
                     </select>
                 </div>
-            </form>
-            <div class="search-options">
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="cheapest">Cheapest</button>
-                    <button class="filter-btn" data-filter="fastest">Fastest</button>
-                </div>
-                <button class="search-btn" id="searchFlightsBtn">Search Flights</button>
-            </div>
-        </div>
-    </section>
 
-    <!-- Flight Results Section -->
-    <section class="container">
-        <div class="flight-results" id="flightResults">
-            <div class="results-header">
-                <h3 class="results-title">Available Flights</h3>
-                <span class="results-count" id="resultsCount">0 flights found</span>
-            </div>
-            <div id="flightsList">
-                <!-- Flight cards will be inserted here by JavaScript -->
-            </div>
-        </div>
-    </section>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea class="form-control" rows="5" placeholder="Your message"></textarea>
+                </div>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose SPARK Airways?</h2>
-            <p
-                style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-                Experience the difference with our premium services
-            </p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Safe & Secure</h3>
-                    <p>Industry-leading safety standards with advanced aircraft monitoring systems and highly trained
-                        pilots.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3>On-Time Performance</h3>
-                    <p>96% on-time performance record with efficient flight operations and real-time tracking.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round-the-clock customer support with AI-powered assistance and multilingual support staff.</p>
-                </div>
+                <button class="btn">Send Message</button>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
+
+    <div id="faqs" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-question-circle"></i> FAQs</h2>
+                </div>
+                <h3>Common Questions</h3>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Booking & Reservations</h4>
+                <p><strong>Q: How can I change my flight?</strong></p>
+                <p>A: You can change your flight through the "Manage Booking" section on our website or by contacting
+                    our customer service.</p>
+
+                <p><strong>Q: What payment methods do you accept?</strong></p>
+                <p>A: We accept all major credit cards, debit cards, PayPal, and bank transfers.</p>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Check-in & Boarding</h4>
+                <p><strong>Q: When does online check-in open?</strong></p>
+                <p>A: Online check-in opens 24 hours before departure and closes 2 hours before departure.</p>
+            </div>
+        </section>
+    </div>
+
+    <div id="travel-advisory" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-exclamation-triangle"></i> Travel Advisory</h2>
+                </div>
+                <h3>Important Travel Information</h3>
+                <p>Stay informed about travel requirements and restrictions for your destination.</p>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Travel Tips</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Arrive at the airport at least 2 hours before domestic flights</li>
+                    <li>Arrive 3 hours before international flights</li>
+                    <li>Keep important documents in your carry-on luggage</li>
+                    <li>Check the latest travel advisories before departure</li>
+                    <li>Consider purchasing travel insurance</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connectionStatus">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connecting to database...</span>
+    </div>
+
+    <div id="refund-policy" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-undo"></i> Refund Policy</h2>
+                </div>
+                <h3>Refund and Cancellation Policy</h3>
+                <p>Understand our policies regarding refunds and cancellations.</p>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Refund Eligibility</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Basic Economy:</strong> Non-refundable, non-changeable</li>
+                    <li><strong>Standard Economy:</strong> Refundable with a cancellation fee</li>
+                    <li><strong>Flex Economy:</strong> Fully refundable</li>
+                    <li><strong>Business Class:</strong> Fully refundable</li>
+                    <li><strong>First Class:</strong> Fully refundable</li>
+                </ul>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Refund Processing Time</h4>
+                <p>Refunds are typically processed within 7-10 business days.</p>
+            </div>
+        </section>
+    </div>
+
+    <div id="site-map" class="page-section">
+        <section class="container" style="padding: 2rem 0;">
+            <div class="subpage-content">
+                <div class="subpage-header">
+                    <button class="back-btn" onclick="showPage('services')"><i class="fas fa-arrow-left"></i>
+                        Back</button>
+                    <h2><i class="fas fa-sitemap"></i> Site Map</h2>
+                </div>
+                <h3>Website Navigation</h3>
+                <p>Find your way around our website with this comprehensive site map.</p>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Quick Links</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Book Flights</li>
+                    <li>Manage Booking</li>
+                    <li>Check-in Online</li>
+                    <li>Flight Status</li>
+                    <li>Baggage Information</li>
+                </ul>
+
+                <h4 style="color: var(--secondary); margin-top: 1.5rem;">Support</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Contact Us</li>
+                    <li>FAQs</li>
+                    <li>Travel Advisory</li>
+                    <li>Refund Policy</li>
+                </ul>
+            </div>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -936,8 +1657,8 @@
                 <div class="footer-logo">
                     <h2>SPARK Airways</h2>
                     <div class="tagline">आप की सुविधा हमारा वादा!</div>
-                    <p>Experience the best in air travel with SPARK Airways. We are committed to providing you with
-                        safe, comfortable, and affordable flights to destinations across India and beyond.</p>
+                    <p>Experience the best in air travel with SPARK Airways. Safe, comfortable, and affordable flights.
+                    </p>
                     <div class="social-icons">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
@@ -948,21 +1669,21 @@
                 <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">Book Flights</a></li>
-                        <li><a href="#">Manage Booking</a></li>
-                        <li><a href="#">Check-in Online</a></li>
-                        <li><a href="#">Flight Status</a></li>
-                        <li><a href="#">Baggage Info</a></li>
+                        <li><a onclick="showSubpage('book-flights')">Book Flights</a></li>
+                        <li><a onclick="showPage('manage-booking')">Manage Booking</a></li>
+                        <li><a onclick="showSubpage('check-in')">Check-in Online</a></li>
+                        <li><a onclick="showSubpage('flight-status')">Flight Status</a></li>
+                        <li><a onclick="showSubpage('baggage-info')">Baggage Info</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h3>Support</h3>
                     <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Travel Advisory</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                        <li><a href="#">Site Map</a></li>
+                        <li><a onclick="showSubpage('contact-us')">Contact Us</a></li>
+                        <li><a onclick="showSubpage('faqs')">FAQs</a></li>
+                        <li><a onclick="showSubpage('travel-advisory')">Travel Advisory</a></li>
+                        <li><a onclick="showSubpage('refund-policy')">Refund Policy</a></li>
+                        <li><a onclick="showSubpage('site-map')">Site Map</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
@@ -979,151 +1700,212 @@
                         & Conditions</a></p>
             </div>
         </div>
-        <!-- AI Chatbot -->
-        <div class="chatbot-container">
-            <div class="chatbot-toggle" id="chatbotToggle">
-                <i class="fas fa-robot"></i>
-            </div>
-
-            <div class="chatbot-window" id="chatbotWindow">
-                <div class="chatbot-header">
-                    <div class="chatbot-title">
-                        <i class="fas fa-robot"></i>
-                        <span>Flight Assistant</span>
-                    </div>
-                    <button class="chatbot-close" id="chatbotClose">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
-                <div class="chatbot-messages" id="chatbotMessages">
-                    <div class="message bot-message">
-                        Hello! I'm your flight assistant. How can I help you find the perfect flight today?
-                        <div class="quick-replies">
-                            <div class="quick-reply" data-message="Find cheapest flights">Find cheapest flights</div>
-                            <div class="quick-reply" data-message="Flight status">Check flight status</div>
-                            <div class="quick-reply" data-message="Baggage information">Baggage info</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="typing-indicator" id="typingIndicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-
-                <div class="chatbot-input">
-                    <input type="text" id="chatbotInput" placeholder="Ask about flights, deals, or destinations...">
-                    <button id="chatbotSend">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
     </footer>
 
-    <script>
-        // Enhanced flight data with duration in minutes for proper sorting
-        const flightDatabase = {
-            'DEL-BOM': [
-                { flight: 'SA205', departure: '06:00 AM', arrival: '08:15 AM', duration: '2h 15m', durationMinutes: 135, price: 3200, seats: 45 },
-                { flight: 'SA207', departure: '10:30 AM', arrival: '12:45 PM', duration: '2h 15m', durationMinutes: 135, price: 3500, seats: 32 },
-                { flight: 'SA209', departure: '03:15 PM', arrival: '05:30 PM', duration: '2h 10m', durationMinutes: 130, price: 3800, seats: 28 },
-                { flight: 'SA211', departure: '08:45 PM', arrival: '11:00 PM', duration: '2h 15m', durationMinutes: 135, price: 4200, seats: 15 }
-            ],
-            'BOM-DEL': [
-                { flight: 'SA206', departure: '07:00 AM', arrival: '09:15 AM', duration: '2h 15m', durationMinutes: 135, price: 3300, seats: 40 },
-                { flight: 'SA208', departure: '01:30 PM', arrival: '03:45 PM', duration: '2h 15m', durationMinutes: 135, price: 3600, seats: 35 },
-                { flight: 'SA210', departure: '06:15 PM', arrival: '08:30 PM', duration: '2h 10m', durationMinutes: 130, price: 3900, seats: 25 }
-            ],
-            'DEL-BLR': [
-                { flight: 'SA301', departure: '07:30 AM', arrival: '10:15 AM', duration: '2h 45m', durationMinutes: 165, price: 4800, seats: 38 },
-                { flight: 'SA303', departure: '02:00 PM', arrival: '04:45 PM', duration: '2h 45m', durationMinutes: 165, price: 5200, seats: 30 },
-                { flight: 'SA305', departure: '07:45 PM', arrival: '10:30 PM', duration: '2h 10m', durationMinutes: 130, price: 5600, seats: 22 }
-            ],
-            'BLR-DEL': [
-                { flight: 'SA302', departure: '06:15 AM', arrival: '09:00 AM', duration: '2h 45m', durationMinutes: 165, price: 4900, seats: 42 },
-                { flight: 'SA304', departure: '12:30 PM', arrival: '03:15 PM', duration: '2h 45m', durationMinutes: 165, price: 5300, seats: 33 }
-            ],
-            'BOM-BLR': [
-                { flight: 'SA401', departure: '08:00 AM', arrival: '09:55 AM', duration: '1h 55m', durationMinutes: 115, price: 3900, seats: 50 },
-                { flight: 'SA403', departure: '04:30 PM', arrival: '06:25 PM', duration: '1h 55m', durationMinutes: 115, price: 4200, seats: 45 }
-            ],
-            'DEL-CCU': [
-                { flight: 'SA501', departure: '09:15 AM', arrival: '11:25 AM', duration: '1h 55m', durationMinutes: 115, price: 4200, seats: 48 },
-                { flight: 'SA503', departure: '05:45 PM', arrival: '07:55 PM', duration: '2h 10m', durationMinutes: 130, price: 4500, seats: 40 }
-            ],
-            'DEL-HYD': [
-                { flight: 'SA601', departure: '08:30 AM', arrival: '10:45 AM', duration: '2h 15m', durationMinutes: 135, price: 4100, seats: 36 },
-                { flight: 'SA603', departure: '03:00 PM', arrival: '05:15 PM', duration: '1h 55m', durationMinutes: 115, price: 4400, seats: 29 }
-            ],
-            'BLR-HYD': [
-                { flight: 'SA701', departure: '10:00 AM', arrival: '11:10 AM', duration: '1h 10m', durationMinutes: 70, price: 3200, seats: 52 },
-                { flight: 'SA703', departure: '06:30 PM', arrival: '07:40 PM', duration: '1h 10m', durationMinutes: 70, price: 3500, seats: 41 }
-            ]
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-title">
+                    <i class="fas fa-robot"></i>
+                    <span>Flight Assistant</span>
+                </div>
+                <button class="chatbot-close" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">
+                    Hello! I'm your flight assistant. How can I help you today?
+                    <div class="quick-replies">
+                        <div class="quick-reply" data-message="Find cheapest flights">Find cheapest flights</div>
+                        <div class="quick-reply" data-message="Check flight status">Flight status</div>
+                        <div class="quick-reply" data-message="Baggage information">Baggage info</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Ask about flights, deals, or destinations...">
+                <button id="chatbotSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFWDeHKSd9x5rqyEk0LDTxyRXSXC7oonE",
+            authDomain: "spark-airways.firebaseapp.com",
+            databaseURL: "https://spark-airways-default-rtdb.firebaseio.com",
+            projectId: "spark-airways",
+            storageBucket: "spark-airways.firebasestorage.app",
+            messagingSenderId: "537142816636",
+            appId: "1:537142816636:web:d7093016e2d95836027ef9"
         };
 
-        // Set minimum date for departure as today
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        let allFlights = [];
+        let cities = new Set();
+
+        // Make functions globally available
+        window.showPage = showPage;
+        window.showSubpage = showSubpage;
+        window.bookFlight = bookFlight;
+
+        // Load flights from Firebase
+        const flightsRef = ref(database, 'flights');
+        onValue(flightsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                allFlights = [];
+                cities.clear();
+
+                snapshot.forEach((childSnapshot) => {
+                    const flight = childSnapshot.val();
+                    flight.id = childSnapshot.key;
+                    allFlights.push(flight);
+                    cities.add(flight.from);
+                    cities.add(flight.to);
+                });
+
+                populateCityDropdowns();
+                updateConnectionStatus(true);
+                console.log(`Loaded ${allFlights.length} flights from Firebase`);
+            } else {
+                updateConnectionStatus(false);
+                console.log('No flights found in database');
+            }
+        }, (error) => {
+            updateConnectionStatus(false);
+            console.error('Firebase error:', error);
+        });
+
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            if (!statusDot || !statusText) return;
+
+            if (connected) {
+                statusDot.classList.remove('disconnected');
+                statusText.textContent = `Connected (${allFlights.length} flights)`;
+            } else {
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'Database not configured';
+            }
+        }
+
+        function populateCityDropdowns() {
+            const fromSelect = document.getElementById('from');
+            const toSelect = document.getElementById('to');
+
+            if (!fromSelect || !toSelect) return;
+
+            const sortedCities = Array.from(cities).sort();
+
+            fromSelect.innerHTML = '<option value="" disabled selected>Select origin</option>';
+            toSelect.innerHTML = '<option value="" disabled selected>Select destination</option>';
+
+            sortedCities.forEach(city => {
+                fromSelect.innerHTML += `<option value="${city}">${city}</option>`;
+                toSelect.innerHTML += `<option value="${city}">${city}</option>`;
+            });
+        }
+
+        // Navigation Functions
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const pageElement = document.getElementById(pageName + '-page');
+            if (pageElement) {
+                pageElement.classList.add('active');
+            }
+
+            // Update active nav link
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSubpage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected subpage
+            const subpage = document.getElementById(pageName);
+            if (subpage) {
+                subpage.classList.add('active');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize date inputs and event listeners
         document.addEventListener('DOMContentLoaded', function () {
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0];
-            document.getElementById('departure').min = formattedDate;
-            document.getElementById('departure').value = formattedDate;
 
-            // Add animation to feature cards on scroll
-            const featureCards = document.querySelectorAll('.feature-card');
+            const departureInput = document.getElementById('departure');
+            if (departureInput) {
+                departureInput.min = formattedDate;
+                departureInput.value = formattedDate;
+            }
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
+            // Search button handler
+            const searchBtn = document.getElementById('searchFlightsBtn');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    searchFlights();
                 });
-            }, { threshold: 0.1 });
+            }
 
-            featureCards.forEach(card => {
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s, transform 0.5s';
-                observer.observe(card);
-            });
-
-            // Search form submission
-            document.getElementById('searchFlightsBtn').addEventListener('click', function (e) {
-                e.preventDefault();
-                searchFlights();
-            });
-
-            // Also search when form is submitted via Enter key
-            document.getElementById('flightSearchForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                searchFlights();
-            });
-
-            // Filter button functionality
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // Remove active class from all buttons
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
+            // Form submit handler
+            const searchForm = document.getElementById('flightSearchForm');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    searchFlights();
                 });
-            });
+            }
 
-            // Initialize chatbot
-            initChatbot();
+            // Chatbot handlers
+            setupChatbot();
+
+            // Make sure home page is active on load
+            showPage('home');
         });
 
-        // Search flights function
+        // Flight search function
         function searchFlights() {
             const from = document.getElementById('from').value;
             const to = document.getElementById('to').value;
             const departure = document.getElementById('departure').value;
             const passengers = document.getElementById('passengers').value;
-            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const searchType = document.querySelector('input[name="flight-option"]:checked').value;
 
             if (!from || !to || !departure) {
                 alert('Please fill in all fields to search for flights.');
@@ -1135,37 +1917,53 @@
                 return;
             }
 
-            const route = `${from}-${to}`;
-            let flights = flightDatabase[route] || [];
-
-            // Sort flights based on active filter
-            if (activeFilter === 'cheapest') {
-                flights.sort((a, b) => a.price - b.price);
-            } else if (activeFilter === 'fastest') {
-                flights.sort((a, b) => a.durationMinutes - b.durationMinutes);
+            const flightsList = document.getElementById('flightsList');
+            if (flightsList) {
+                flightsList.innerHTML = '<div class="loading"><i class="fas fa-circle-notch"></i><p>Searching flights...</p></div>';
             }
 
-            displayFlights(flights, from, to, departure, passengers);
+            const resultsSection = document.getElementById('flightResults');
+            if (resultsSection) {
+                resultsSection.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                let matchingFlights = allFlights.filter(flight =>
+                    flight.from === from && flight.to === to
+                );
+
+                // Sort flights based on search type
+                if (searchType === 'cheapest') {
+                    matchingFlights.sort((a, b) => a.price - b.price);
+                } else if (searchType === 'fastest') {
+                    matchingFlights.sort((a, b) => a.distance - b.distance);
+                }
+
+                displayFlights(matchingFlights, from, to, departure, passengers);
+                if (resultsSection) {
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
         }
 
-        // Display flights function
+        // Display flights
         function displayFlights(flights, from, to, departure, passengers) {
-            const resultsSection = document.getElementById('flightResults');
             const flightsList = document.getElementById('flightsList');
             const resultsCount = document.getElementById('resultsCount');
 
-            // Clear previous results
+            if (!flightsList || !resultsCount) return;
+
             flightsList.innerHTML = '';
 
             if (flights.length === 0) {
                 flightsList.innerHTML = `
-                    <div class="no-flights">
-                        <i class="fas fa-plane-slash"></i>
-                        <h3>No Flights Found</h3>
-                        <p>Sorry, we couldn't find any flights for your selected route.</p>
-                        <p>Please try different cities or dates.</p>
-                    </div>
-                `;
+                <div class="no-flights">
+                    <i class="fas fa-plane-slash"></i>
+                    <h3>No Flights Found</h3>
+                    <p>Sorry, we couldn't find any flights from ${from} to ${to}.</p>
+                    <p>Please try different cities.</p>
+                </div>
+            `;
                 resultsCount.textContent = '0 flights found';
             } else {
                 resultsCount.textContent = `${flights.length} flight${flights.length > 1 ? 's' : ''} found`;
@@ -1174,160 +1972,150 @@
                     const flightCard = document.createElement('div');
                     flightCard.className = 'flight-card';
                     flightCard.innerHTML = `
-                        <div class="flight-header">
-                            <div class="flight-route">
-                                <span class="flight-code">${flight.flight}</span>
-                                <div class="flight-times">
-                                    <span>${flight.departure}</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                    <span>${flight.arrival}</span>
-                                    <span class="flight-duration">${flight.duration}</span>
-                                </div>
-                            </div>
-                            <div class="flight-seats">
-                                <i class="fas fa-user"></i>
-                                <span>${flight.seats} seats left</span>
+                    <div class="flight-header">
+                        <div class="flight-route">
+                            <span class="flight-code">${flight.airline || 'SPARK Airways'}</span>
+                            <div class="flight-times">
+                                <span>${flight.departureTime || '06:00 AM'}</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>${flight.arrivalTime || '08:15 AM'}</span>
+                                <span class="flight-duration">${formatDuration(flight.distance || 1150)}</span>
                             </div>
                         </div>
-                        <div class="flight-details">
-                            <div class="flight-info">
-                                <div><strong>${getCityName(from)} → ${getCityName(to)}</strong></div>
-                                <div>Departure: ${formatDate(departure)}</div>
-                            </div>
-                            <div class="flight-price">
-                                <div class="price-amount">₹${flight.price}</div>
-                                <div>per person</div>
-                            </div>
-                            <button class="book-btn" onclick="bookFlight('${flight.flight}', ${passengers})">
-                                Book Now
-                            </button>
+                        <div class="flight-seats">
+                            <i class="fas fa-route"></i>
+                            <span>${Math.round(flight.distance || 1150)} km</span>
                         </div>
-                    `;
+                    </div>
+                    <div class="flight-details">
+                        <div class="flight-info">
+                            <div><strong>${flight.from} → ${flight.to}</strong></div>
+                            <div>${flight.fromIATA || 'DEL'} → ${flight.toIATA || 'BOM'}</div>
+                        </div>
+                        <div class="flight-price">
+                            <div class="price-amount">₹${(flight.price || 3200).toLocaleString()}</div>
+                            <div>per person</div>
+                        </div>
+                        <button class="book-btn" onclick="bookFlight('${flight.airline || 'SPARK Airways'}', '${flight.from}', '${flight.to}', ${passengers}, ${flight.price || 3200})">
+                            Book Now
+                        </button>
+                    </div>
+                `;
                     flightsList.appendChild(flightCard);
                 });
             }
-
-            // Show results section
-            resultsSection.style.display = 'block';
-
-            // Scroll to results
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Helper functions
-        function getCityName(code) {
-            const cities = {
-                'DEL': 'Delhi',
-                'BOM': 'Mumbai',
-                'BLR': 'Bangalore',
-                'MAA': 'Chennai',
-                'CCU': 'Kolkata',
-                'HYD': 'Hyderabad'
-            };
-            return cities[code] || code;
+        function formatDuration(distance) {
+            const hours = Math.round((distance / 800 + 1) * 10) / 10;
+            const wholeHours = Math.floor(hours);
+            const minutes = Math.round((hours - wholeHours) * 60);
+            return `${wholeHours}h ${minutes}m`;
         }
 
-        function formatDate(dateString) {
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-IN', options);
-        }
-
-        function bookFlight(flightNumber, passengers) {
-            alert(`Booking ${flightNumber} for ${passengers} passenger${passengers > 1 ? 's' : ''}!\n\nThis would redirect to the booking page in a real application.`);
+        function bookFlight(airline, from, to, passengers, price) {
+            const total = price * passengers;
+            alert(`Booking Details:\n\nAirline: ${airline}\nRoute: ${from} → ${to}\nPassengers: ${passengers}\nTotal: ₹${total.toLocaleString()}\n\nThis would redirect to payment in a real application.`);
         }
 
         // Chatbot functionality
-        function initChatbot() {
+        function setupChatbot() {
             const chatbotToggle = document.getElementById('chatbotToggle');
             const chatbotWindow = document.getElementById('chatbotWindow');
             const chatbotClose = document.getElementById('chatbotClose');
-            const chatbotMessages = document.getElementById('chatbotMessages');
             const chatbotInput = document.getElementById('chatbotInput');
             const chatbotSend = document.getElementById('chatbotSend');
-            const typingIndicator = document.getElementById('typingIndicator');
+            const chatbotMessages = document.getElementById('chatbotMessages');
 
-            // Toggle chatbot window
+            if (!chatbotToggle) return;
+
+            // Make chatbot functions available globally
+            window.sendChatbotMessage = sendMessage;
+
             chatbotToggle.addEventListener('click', function () {
-                chatbotWindow.style.display = 'flex';
-                chatbotToggle.style.display = 'none';
-                chatbotInput.focus();
+                chatbotWindow.classList.toggle('active');
             });
 
-            // Close chatbot window
             chatbotClose.addEventListener('click', function () {
-                chatbotWindow.style.display = 'none';
-                chatbotToggle.style.display = 'flex';
+                chatbotWindow.classList.remove('active');
             });
 
-            // Send message function
-            function sendMessage() {
-                const message = chatbotInput.value.trim();
-                if (message === '') return;
-
-                // Add user message
-                addMessage(message, 'user');
-                chatbotInput.value = '';
-
-                // Show typing indicator
-                typingIndicator.style.display = 'flex';
-
-                // Simulate bot response after delay
-                setTimeout(() => {
-                    typingIndicator.style.display = 'none';
-                    const botResponse = generateBotResponse(message);
-                    addMessage(botResponse, 'bot');
-                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                }, 1500);
-            }
-
-            // Send message on button click
             chatbotSend.addEventListener('click', sendMessage);
 
-            // Send message on Enter key
             chatbotInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
             });
 
-            // Quick reply functionality
+            // Quick reply handlers
             document.addEventListener('click', function (e) {
                 if (e.target.classList.contains('quick-reply')) {
                     const message = e.target.getAttribute('data-message');
-                    chatbotInput.value = message;
+                    if (chatbotInput) {
+                        chatbotInput.value = message;
+                    }
                     sendMessage();
                 }
             });
 
-            // Add message to chat
-            function addMessage(text, sender) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${sender}-message`;
-                messageDiv.textContent = text;
-                chatbotMessages.appendChild(messageDiv);
+            function sendMessage() {
+                if (!chatbotInput || !chatbotMessages) return;
+
+                const message = chatbotInput.value.trim();
+                if (!message) return;
+
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'message user-message';
+                userMsg.textContent = message;
+                chatbotMessages.appendChild(userMsg);
+
+                chatbotInput.value = '';
+
+                // Scroll to bottom
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+                // Simulate bot response
+                setTimeout(function () {
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot-message';
+
+                    let response = getBotResponse(message);
+                    botMsg.textContent = response;
+
+                    // Add quick replies for certain responses
+                    if (message.toLowerCase().includes('flight') || message.toLowerCase().includes('book')) {
+                        const quickReplies = document.createElement('div');
+                        quickReplies.className = 'quick-replies';
+                        quickReplies.innerHTML = `
+                        <div class="quick-reply" data-message="Find cheapest flights">Find cheapest flights</div>
+                        <div class="quick-reply" data-message="Check flight status">Flight status</div>
+                    `;
+                        botMsg.appendChild(quickReplies);
+                    }
+
+                    chatbotMessages.appendChild(botMsg);
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 1000);
             }
 
-            // Generate bot response
-            function generateBotResponse(message) {
-                message = message.toLowerCase();
+            function getBotResponse(message) {
+                const msg = message.toLowerCase();
 
-                if (message.includes('cheapest') || message.includes('cheap')) {
-                    return "Our cheapest flights are typically available on weekdays, especially Tuesdays and Wednesdays. You can also save by booking 2-3 months in advance. Would you like me to search for budget-friendly options?";
-                } else if (message.includes('flight status') || message.includes('status')) {
-                    return "To check your flight status, I'll need your flight number or route. You can also check our flight status page for real-time updates.";
-                } else if (message.includes('baggage') || message.includes('luggage')) {
-                    return "Our baggage allowance is 15kg for economy class and 25kg for business class. Additional baggage can be purchased online at a discount. Is there something specific about baggage you'd like to know?";
-                } else if (message.includes('book') || message.includes('reservation')) {
-                    return "I can help you find flights for booking. Please use the search form above, or let me know your departure and destination cities and preferred travel dates.";
-                } else if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-                    return "Hello! I'm your flight assistant. I can help you find flights, check status, or answer questions about baggage and policies.";
-                } else if (message.includes('thank')) {
-                    return "You're welcome! Is there anything else I can help you with today?";
-                } else if (message.includes('cancel') || message.includes('refund')) {
-                    return "Our cancellation policy allows for full refunds if cancelled within 24 hours of booking. After that, fees may apply depending on fare type. Would you like more details?";
+                if (msg.includes('cheap') || msg.includes('price')) {
+                    return 'Our cheapest flights start from ₹3,200! Use the search form on our homepage to find the best deals for your route.';
+                } else if (msg.includes('status')) {
+                    return 'You can check your flight status in the Services section. Just enter your flight number and date!';
+                } else if (msg.includes('baggage') || msg.includes('luggage')) {
+                    return 'Economy passengers can bring 1 carry-on (7kg) and 1 checked bag (23kg). Visit our Baggage Information page for details.';
+                } else if (msg.includes('book') || msg.includes('flight')) {
+                    return 'You can book flights using the search form on our homepage. Select your cities, date, and number of passengers!';
+                } else if (msg.includes('cancel') || msg.includes('refund')) {
+                    return 'Refund policies vary by ticket type. Check our Refund Policy page for detailed information.';
                 } else {
-                    return "I'm here to help with flight information, bookings, and travel queries. You can ask me about flights, baggage, or check-in information. How can I assist you today?";
+                    return 'I can help you with flight bookings, status checks, baggage information, and more. What would you like to know?';
                 }
             }
         }
